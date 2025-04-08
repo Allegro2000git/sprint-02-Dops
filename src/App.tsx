@@ -1,209 +1,154 @@
 import './App.css';
-import { Todolist} from './Todolist';
-import {v1} from 'uuid';
-import {useEffect, useState} from "react";
+import {v1} from "uuid";
+import {FlightTable} from "./FlightTable";
+import {AddNewItem} from "./components/AddNewItem";
+import styles from './Styles.module.css';
+import React, {useState} from "react";
 
-type ObjectType = {
-    title: string
-    filter: FilterValuesType
-    tasks: Array<TasksType>
-    students: Array<string>
-}
-export type TasksType = {
-    taskId: string
-    title: string
-    isDone: boolean
-}
+function App() {
+    //TODO: ТРИ задания от простого к сложному:
+    //TODO: 1. Не работает кнопка удаления маршрута (routes) в App ничего править не нужно -ok
+    //TODO: 2. Не работает ЧЕКБОКС -ошибки даже в APP! Вместо того чтобы передавать значение,в функции перещелкивается противоположное! -ok
+    //TODO: 3. Обновление МАРШРУТА И ДАТЫ научились работать без функции в App, это нормально? Но в App ничего править не нужно
+    //TODO: 3. Вначале почини ДАТУ, а потом убедись, что и ОБНОВЛЕНИЕ МАРШРУТА "починилось" каким-то волшебным образом, но так ли это?
 
-type TodosType = {
-    todolistId: string } &  ObjectType
 
-export type FilterValuesType = "all" | "active" | "completed";
-
-export const App = ()=> {
-
-    const todoFromServer: ObjectType[] = [
+    const [flightTables, setFlightTables] = useState([
         {
-            title: "What to learn",
-            filter: "all",
-            tasks: [
-                {taskId: v1(), title: "HTML&CSS", isDone: true},
-                {taskId: v1(), title: "JS", isDone: true}
-            ],
-            students: [
-                'Rick Kane',
-                'Finnlay Bentley',
-                'Samia North',
-                'Isaac Morton',
-                'Lily-Ann Clifford',
-                'Thalia Park',
-                'Sapphire Cruz',
-                'Cieran Vazquez',
-                'Anya Estes',
-                'Dominika Field',
-                'Rosanna Chung',
-                'Safiyah Davey',
-                'Ryley Beasley',
-                'Kalvin Trejo',
-                'Evie-Mae Farrell',
-                'Juliet Valencia',
-                'Astrid Austin',
-                'Lyle Montgomery',
-                'Nisha Mora',
-                'Kylie Callaghan',
-                'Star Wilks',
-                'Marissa Colley',
-                'Asa Fuller',
-                'Leigh Kemp',
-                'Avleen Dawson',
-                'Sammy Bonilla',
-                'Acacia Becker',
-                'Coral Shepherd',
-                'Melina Molina',
-                'Kiran Bailey',
-                'Clara Escobar',
-                'Alexandru Horn',
-                'Brandon-Lee Mercado',
-                'Elouise Weston',
-                'King Long',
-                'Kerri Searle',
-                'Kanye Hamer',
-                'Elwood Benitez',
-                'Mikail Whitaker',
-                'Bobby Hardy',
-                'Talha Ferry',
-                'Priscilla Landry',
-                'Olivia-Grace Cain',
-                'Kiaan Wallace',
-                'Wesley Padilla90',
-                'Ella-Grace Wooten91',
-                'Kaif Molloy92',
-                'Kamal Broadhurst93',
-                'Bianca Ferrell94',
-                'Micheal Talbot95',
+            date: '2024-04-20',
+            flightTableID: v1(),
+            routes: [
+                {id: v1(), from: "Berlin", to: "Tokyo", isBooked: true},
+                {id: v1(), from: "Amsterdam", to: "Beijing", isBooked: true},
+                {id: v1(), from: "Paris", to: "Seoul", isBooked: false}
             ]
         },
         {
-            title: "What to do",
-            filter: "all",
-            tasks: [
-                {taskId: v1(), title: "HTML&CSS2", isDone: true},
-                {taskId: v1(), title: "JS2", isDone: true}
-            ],
-            students: [
-                'Jago Wormald1',
-                'Saul Milne2',
-                'Aariz Hester3',
-                'Dion Reeve4',
-                'Anisa Ortega5',
-                'Blade Cisneros6',
-                'Malaikah Phelps7',
-                'Zeeshan Gallagher8',
-                'Isobella Vo9',
-                'Rizwan Mathis10',
-                'Menaal Leach11',
-                'Kian Walton12',
-                'Orion Lamb13',
-                'Faizah Huynh14',
-                'Crystal Vaughan15',
-                'Vivien Hickman16',
-                'Stuart Lu17',
-                'Karol Davison18',
-                'Dario Burns19',
-                'Chloe Rich20',
-                'Martyna Felix',
-                'Nida Glass',
-                'Maeve Miles',
-                'Hasnain Puckett',
-                'Ayman Cano',
-                'Safwan Perry',
-                'Fox Kelly',
-                'Louise Barlow',
-                'Malaki Mcgill',
-                'Leanna Cline',
-                'Willard Hodge',
-                'Amelia Dorsey',
-                'Kiah Porter',
-                'Jeanne Daly',
-                'Mohsin Armstrong',
-                'Laurie Rangel',
-                'Princess Tierney',
-                'Kasim Kendall',
-                'Darryl Cope',
-                'Elysha Ray',
-                'Liyana Harris',
-                'Kashif Blackburn',
-                'Atif Zimmerman',
-                'Sila Hartley',
-                'Ralphie Hebert',
+            date: '2024-05-15',
+            flightTableID: v1(),
+            routes: [
+                {id: v1(), from: "Sydney", to: "Los Angeles", isBooked: true},
+                {id: v1(), from: "Melbourne", to: "San Francisco", isBooked: false},
+                {id: v1(), from: "Brisbane", to: "Vancouver", isBooked: false}
+            ]
+        },
+        {
+            date: '2024-06-10',
+            flightTableID: v1(),
+            routes: [
+                {id: v1(), from: "London", to: "New York", isBooked: true},
+                {id: v1(), from: "Madrid", to: "Miami", isBooked: false},
+                {id: v1(), from: "Rome", to: "Toronto", isBooked: true}
             ]
         }
-    ]
+    ]);
 
-    const [todos, setTodos] = useState<TodosType[]>([])
+    const addNewFTRoute = (flightTableID: string, from: string, to: string) => {
+        const newRoute = {id: v1(), from, to, isBooked: true};
+        setFlightTables(prevState =>
+            prevState.map(table =>
+                table.flightTableID === flightTableID
+                    ? {...table, routes: [...table.routes, newRoute]}
+                    : table
+            )
+        );
+    };
 
-    useEffect(()=>{
-        setTodos(todoFromServer.map(el => ({...el, todolistId: v1()}) ))
-    }, [])
+    const removeFTRoute = (flightTableID: string, routeID: string) => {
+        setFlightTables(flightTables.map(flightTable =>
+            flightTable.flightTableID === flightTableID
+                ? {
+                    ...flightTable,
+                    routes: flightTable.routes.filter(route => route.id !== routeID)
+                }
+                : flightTable
+        ));
+    };
 
-    function removeTask(taskId: string, todolistId: string) {
-        setTodos(prevState=> prevState.map(el => el.todolistId === todolistId
-            ? {...el, tasks: el.tasks.filter(t => t.taskId !== taskId) }
-            : el
-        ))
-    }
-    function addTask(title: string, todolistId: string) {
-        let newTask: TasksType = {taskId: v1(), title, isDone: false};
-        setTodos( (prevState) => prevState.map(el => el.todolistId === todolistId
-        ? {...el, tasks: [...el.tasks, newTask]}
-        : el
-        ))
-    }
-    function changeStatus(payload:{taskId: string, isDone: boolean, todolistId: string}) {
-        const { taskId, todolistId, isDone } = payload
-        setTodos( (prevState) => prevState.map(el => el.todolistId === todolistId
-            ? {...el, tasks: el.tasks.map(t => t.taskId === taskId ? {...t, isDone} : t)}
-            : el  ))
-    }
-    function changeFilter(payload:{filter: FilterValuesType, todolistId: string}) {
-        const {filter, todolistId} = payload
-        setTodos((prevState) => prevState.map(el => el.todolistId === todolistId
-        ?  {...el, filter}
-        : el))
-    }
-    function removeTodolist(todolistId: string) {
-        setTodos( prevState => prevState.filter(el => el.todolistId !== todolistId) )
-    }
+    const toggleFTIsBooked = (flightTableID: string, routeID: string) => {
+        setFlightTables(flightTables.map(ft =>
+            ft.flightTableID === flightTableID ? {
+                    ...ft,
+                    routes: ft.routes.map(route =>
+                        route.id === routeID ? {...route, isBooked: !route.isBooked} : route
+                    )
+                }
+                : ft
+        ));
+    };
 
+    const addNewFT = (from: string, to: string) => {
+        const newFlightTable = {
+            date: new Date().toISOString().split('T')[0], //установит текущую дату для нового flight table
+            flightTableID: v1(),
+            routes: [
+                {id: v1(), from, to, isBooked: false}
+            ]
+        };
+        setFlightTables([...flightTables, newFlightTable]);
+    };
+
+    const removeFT = (flightTableID: string) => {
+        setFlightTables(flightTables.filter(ft => ft.flightTableID !== flightTableID));
+    };
+
+    const updateFTDate = (flightTableID: string, newDate: string) => {
+        setFlightTables(flightTables.map(ft =>
+            ft.flightTableID === flightTableID ? {...ft, date: newDate} : ft
+        ));
+    };
+
+    const updateFTRoutesFrom = (flightTableID: string, routeID: string, newFrom: string) => {
+        setFlightTables(flightTables.map(ft =>
+            ft.flightTableID === flightTableID ? {
+                ...ft,
+                routes: ft.routes.map(route =>
+                    route.id === routeID ? {...route, from: newFrom} : route
+                )
+            } : ft
+        ));
+    };
+
+    const updateFTRoutesTo = (flightTableID: string, routeID: string, newTo: string) => {
+        setFlightTables(flightTables.map(ft =>
+            ft.flightTableID === flightTableID ? {
+                ...ft,
+                routes: ft.routes.map(route =>
+                    route.id === routeID ? {...route, to: newTo} : route
+                )
+            } : ft
+        ));
+    };
 
     return (
-        <div className="App">
-            {todos.map(tl => {
-                    let allTodolistTasks = tl.tasks
-                    let tasksForTodolist = allTodolistTasks;
-
-                    if (tl.filter === "active") {
-                        tasksForTodolist = allTodolistTasks.filter(t => !t.isDone);
-                    }
-                    if (tl.filter === "completed") {
-                        tasksForTodolist = allTodolistTasks.filter(t => t.isDone);
-                    }
-
-                    return <Todolist
-                        key={tl.todolistId}
-                        id={tl.todolistId}
-                        title={tl.title}
-                        tasks={tasksForTodolist}
-                        removeTask={removeTask}
-                        changeFilter={changeFilter}
-                        addTask={addTask}
-                        changeTaskStatus={changeStatus}
-                        filter={tl.filter}
-                        removeTodolist={removeTodolist}
-                    />
-                })
-            }
-
-        </div>
+        <>
+            <header className={styles.header}>
+                <AddNewItem
+                    title={"Add New FlightTable"}
+                    onClick={addNewFT}
+                />
+            </header>
+            <div className={styles.appContainer}>
+                {flightTables.map(el => {
+                    return (
+                        <FlightTable
+                            key={el.flightTableID}
+                            flightTableID={el.flightTableID}
+                            date={el.date}
+                            routes={el.routes}
+                            toggleFTIsBooked={toggleFTIsBooked}
+                            removeFT={removeFT}
+                            updateFTDate={updateFTDate}
+                            updateFTRoutesFrom={updateFTRoutesFrom}
+                            updateFTRoutesTo={updateFTRoutesTo}
+                            removeFTRoute={removeFTRoute}
+                            addNewFTRoute={addNewFTRoute}
+                        />
+                    )
+                })}
+            </div>
+        </>
     );
 }
+
+export default App;
