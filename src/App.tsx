@@ -1,16 +1,10 @@
-import './App.css';
+import styles from './Styles.module.css'
 import {v1} from "uuid";
 import {FlightTable} from "./FlightTable";
 import {AddNewItem} from "./components/AddNewItem";
-import styles from './Styles.module.css';
-import React, {useState} from "react";
+import {useState} from "react";
 
 function App() {
-    //TODO: ТРИ задания от простого к сложному:
-    //TODO: 1. Не работает кнопка удаления маршрута (routes) в App ничего править не нужно -ok
-    //TODO: 2. Не работает ЧЕКБОКС -ошибки даже в APP! Вместо того чтобы передавать значение,в функции перещелкивается противоположное! -ok
-    //TODO: 3. Обновление МАРШРУТА И ДАТЫ научились работать без функции в App, это нормально? Но в App ничего править не нужно
-    //TODO: 3. Вначале почини ДАТУ, а потом убедись, что и ОБНОВЛЕНИЕ МАРШРУТА "починилось" каким-то волшебным образом, но так ли это?
 
 
     const [flightTables, setFlightTables] = useState([
@@ -65,12 +59,13 @@ function App() {
         ));
     };
 
-    const toggleFTIsBooked = (flightTableID: string, routeID: string) => {
+    const toggleFTIsBooked = (payload:{flightTableID: string, routeID: string, isBooked: boolean}) => {
+        const {flightTableID, routeID, isBooked} = payload;
         setFlightTables(flightTables.map(ft =>
             ft.flightTableID === flightTableID ? {
                     ...ft,
                     routes: ft.routes.map(route =>
-                        route.id === routeID ? {...route, isBooked: !route.isBooked} : route
+                        route.id === routeID ? {...route, isBooked} : route
                     )
                 }
                 : ft
@@ -92,13 +87,15 @@ function App() {
         setFlightTables(flightTables.filter(ft => ft.flightTableID !== flightTableID));
     };
 
-    const updateFTDate = (flightTableID: string, newDate: string) => {
+    const updateFTDate = (payload:{flightTableID: string, newDate: string}) => {
+        const {flightTableID, newDate} = payload;
         setFlightTables(flightTables.map(ft =>
             ft.flightTableID === flightTableID ? {...ft, date: newDate} : ft
         ));
     };
 
-    const updateFTRoutesFrom = (flightTableID: string, routeID: string, newFrom: string) => {
+    const updateFTRoutesFrom = (payload:{flightTableID: string, routeID: string, newFrom: string}) => {
+        const {flightTableID, routeID, newFrom} = payload;
         setFlightTables(flightTables.map(ft =>
             ft.flightTableID === flightTableID ? {
                 ...ft,
@@ -107,9 +104,11 @@ function App() {
                 )
             } : ft
         ));
+        console.log(111)
     };
 
-    const updateFTRoutesTo = (flightTableID: string, routeID: string, newTo: string) => {
+    const updateFTRoutesTo = (payload:{flightTableID: string, routeID: string, newTo: string}) => {
+        const {flightTableID, routeID, newTo} = payload;
         setFlightTables(flightTables.map(ft =>
             ft.flightTableID === flightTableID ? {
                 ...ft,
@@ -118,6 +117,7 @@ function App() {
                 )
             } : ft
         ));
+        console.log(222)
     };
 
     return (
